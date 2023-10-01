@@ -73,6 +73,7 @@ a {
   text-decoration: none;
   cursor: pointer;
 }
+button {cursor: pointer;}
 
 main {
   max-width: 100%;
@@ -91,6 +92,22 @@ main {
   background: linear-gradient(to right, #46c3da 0%, #90eeff 50%, #fff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.loader {
+  height: auto;
+  width: 100%;
+  text-align: center;
+  padding: 4em;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader svg path,
+.loader svg rect {
+  fill: var(--color-primary);
 }
 
 /* ========== NAVBAR ========== */
@@ -282,6 +299,7 @@ header nav a.nav-active:before {
   grid-template-columns: 60% 40%;
   gap: 20px;
   position: relative;
+  margin-top: 3rem;
 }
 
 .sidebar {
@@ -1045,4 +1063,23 @@ footer .copyright {
   font-weight: 300;
   font-size: 0.9rem;
   padding-top: 20px;
+}
+
+
+/* ============ PROFILE PAGE ============ */
+.profile_page {
+  padding: 2rem 4rem;
+}
+
+.profile_desc {
+  padding: 20px 0;
+  font-size: 1.4rem;
+}
+
+.profile_page .post_grid {
+  grid-template-columns: 70%;
+}
+
+.profile_page .post_in {
+  grid-template-columns: 1fr 1fr;
 }

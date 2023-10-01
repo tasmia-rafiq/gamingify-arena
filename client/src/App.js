@@ -11,6 +11,8 @@ import EditPost from "./Pages/EditPost";
 import CategoryPages from "./Pages/CategoryPages";
 import LatestPage from "./Pages/LatestPage";
 import logo from "./assets/logo.png";
+import UserProfile from "./Pages/UserProfile";
+import AuthorProfile from "./Pages/AuthorProfile";
 
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
           <Route path="/edit/:id" element={<EditPost />} />
           <Route path="/:categoryId/posts" element={<CategoryPages />} />
           <Route path="/latest" element={<LatestPage />} />
+          <Route exact path="/profile" element={<UserProfile isCurrentUser />} />
+          <Route path="/profile/:authorID" element={<UserProfile />} />
         </Route>
       </Routes>
     </UserContextProvider>

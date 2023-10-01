@@ -159,7 +159,6 @@ app.get('/category', async (req, res) => {
     }
 });
 
-
 // Fetch category title by ID
 app.get('/category/:categoryId', async (req, res) => {
     const categoryId = req.params.categoryId;
@@ -178,7 +177,7 @@ app.get('/category/:categoryId', async (req, res) => {
 
 // Fetch category posts
 app.get('/:categoryId/posts', async (req, res) => {
-    const categoryId = req.params.categoryId;
+    const { categoryId } = req.params;
 
     try {
         // Assuming 'category' field in Post model is an ObjectId reference to Category model
@@ -198,6 +197,42 @@ app.get('/:categoryId/posts', async (req, res) => {
     }
 });
 
+
+// display profile's posts
+app.get('/:userID/userPosts', async (req, res) => {
+    const userID = req.params.userID;
+    console.log('Requested userID:', userID);
+
+    try {
+        const posts = await Post.find({ author: userID })
+            .populate('author', ['username'])
+            .sort({ createdAt: -1 })
+            .lean();
+
+        res.json(posts);
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        res.status(500).json('Internal Server Error Oops!');
+    }
+});
+
+// display author posts
+app.get('/profile/:authorID', async (req, res) => {
+    const authorID = req.params.authorID;
+    console.log('Requested authorID:', authorID);
+
+    try {
+        const posts = await Post.find({ author: authorID })
+            .populate('author', ['username'])
+            .sort({ createdAt: -1 })
+            .lean();
+
+        res.json(posts);
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        res.status(500).json('Internal Server Error Oops!');
+    }
+})
 
 
 

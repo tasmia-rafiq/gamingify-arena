@@ -31,7 +31,7 @@ const PostPage = () => {
     };
 
     fetchCategoryTitle();
-  }, [postInfo]);
+  }, [postInfo?.category?._id]);
 
   useEffect(() => {
     fetch(`http://localhost:4000/post/${id}`).then((response) => {
@@ -81,7 +81,7 @@ const PostPage = () => {
       <PostCategory categoryTitle={categoryTitle} />
       <h1 className="post_title">{postInfo.title}</h1>
       <p className="post_summary">~ {postInfo.summary}</p>
-      <div className="author">By @{postInfo.author.username}</div>
+      <div className="author">By <Link to={userInfo.id === postInfo.author._id  ? `/profile` : `/profile/${postInfo.author._id}`}>@{postInfo.author.username}</Link></div>
       <time>
         Published {format(new Date(postInfo.createdAt), "MMM d, yyyy . KK:mm aaa")}
       </time>

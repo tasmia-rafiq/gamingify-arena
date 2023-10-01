@@ -1,8 +1,10 @@
 import { useState } from "react"
+import { useNavigate } from "react-router";
 
 const RegisterPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     async function register(ev) {
         ev.preventDefault();
@@ -15,7 +17,8 @@ const RegisterPage = () => {
         });
 
         if (response.status === 200) {
-          alert('Registration Successful.');
+          alert('Registration Successful, you can now login to your account!');
+          navigate('/login');
         } else {
           alert(' Registration Failed.')
         }

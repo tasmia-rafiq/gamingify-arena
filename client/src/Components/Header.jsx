@@ -58,6 +58,7 @@ const Header = () => {
       method: "POST",
     });
     setUserInfo(null);
+    navigate('/');
   }
 
   const username = userInfo?.username; //since username can be sometimes new so we will use userinfo?
@@ -111,12 +112,12 @@ const Header = () => {
               </span>
               {showDropdown && (
                 <div className="dropdown-content">
-                  <div className="user-profile-info">
+                  <Link to={"/profile"} onClick={() => setShowDropdown(!showDropdown)} className="user-profile-info">
                     <div className="user-avatar">
                       {username.charAt(0).toUpperCase()}
                     </div>
                     <p>{username}</p>
-                  </div>
+                  </Link>
                   <Link
                     to="/create"
                     onClick={() => setShowDropdown(!showDropdown)}

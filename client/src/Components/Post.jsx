@@ -1,6 +1,7 @@
 import { format } from "date-fns";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../UserContext";
 
 const Post = ({
   _id,
@@ -14,6 +15,7 @@ const Post = ({
 }) => {
 
   const [categoryTitle, setCategoryTitle] = useState("");
+  const { userInfo } = useContext(UserContext);
 
   useEffect(() => {
     const fetchCategoryTitle = async () => {
@@ -50,7 +52,7 @@ const Post = ({
           </Link>
 
           <p className="info">
-            <a className="author">{author.username}</a>
+            <Link to={userInfo.id === author._id  ? `/profile` : `/profile/${author._id}`} className="author">{author.username}</Link>
             <time>
               {format(new Date(createdAt), "MMM d, yyyy . KK:mm aaa")}
             </time>
