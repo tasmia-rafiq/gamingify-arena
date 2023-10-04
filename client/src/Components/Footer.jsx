@@ -7,7 +7,7 @@ const Footer = ({ logo }) => {
 
   useEffect(() => {
     // Fetch categories
-    fetch("http://localhost:4000/category")
+    fetch("https://gamingify-arena-api.vercel.app/category")
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));

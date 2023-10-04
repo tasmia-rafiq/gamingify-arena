@@ -23,7 +23,7 @@ const PostPage = () => {
     const fetchCategoryTitle = async () => {
       try {
         const response = await fetch(
-          `http://localhost:4000/category/${postInfo.category._id}`
+          `https://gamingify-arena-api.vercel.app/category/${postInfo.category._id}`
         );
         const data = await response.json();
         setCategoryTitle(data);
@@ -37,7 +37,7 @@ const PostPage = () => {
   }, [postInfo?.category?._id]);
 
   useEffect(() => {
-    fetch(`http://localhost:4000/post/${id}`).then((response) => {
+    fetch(`https://gamingify-arena-api.vercel.app/post/${id}`).then((response) => {
       response.json().then((postInfo) => {
         setPostInfo(postInfo);
       });
@@ -47,7 +47,7 @@ const PostPage = () => {
   // delete post function
   const deletePost = async (postId) => {
     try {
-      const response = await fetch(`http://localhost:4000/post/${postId}`, {
+      const response = await fetch(`https://gamingify-arena-api.vercel.app/post/${postId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -123,7 +123,7 @@ const PostPage = () => {
             <div className="left_side">
               <div className="image">
                 <img
-                  src={`http://localhost:4000/${postInfo.coverImg}`}
+                  src={`https://gamingify-arena-api.vercel.app/${postInfo.coverImg}`}
                   alt="Cover"
                 />
               </div>
