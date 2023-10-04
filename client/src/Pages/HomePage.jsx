@@ -21,9 +21,9 @@ const HomePage = () => {
       <HeroSection />
 
       <div className="post_section" id="explore">
+        {/* RECENT POSTS */}
         <h2 className="head_title blue_gradient">Recent Posts</h2>
-
-        <PostGrid posts={posts} isLoading={isLoading}  />
+        <PostGrid posts={posts} isLoading={isLoading} />
       </div>
     </>
   );

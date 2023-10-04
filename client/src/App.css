@@ -73,7 +73,7 @@ a {
   text-decoration: none;
   cursor: pointer;
 }
-button {cursor: pointer;}
+button {cursor: pointer; font-family: var(--poppins);}
 
 main {
   max-width: 100%;
@@ -85,6 +85,7 @@ main {
   padding: 2rem 0;
   font-size: 3rem;
   font-weight: 600;
+  text-align: center;
 }
 
 .blue_gradient {
@@ -267,6 +268,9 @@ header nav a.nav-active:before {
   line-height: 1.2;
   margin-bottom: 20px;
 }
+.hero-content h1 span {
+  text-shadow: -3px -2px 10px var(--color-primary); /* Glowy Text */
+}
 
 .hero-content p {
   font-size: 1.8rem;
@@ -296,10 +300,13 @@ header nav a.nav-active:before {
 /* ============ POST GRID (WITH SIDEBAR) ============ */
 .post_grid_layout {
   display: grid;
-  grid-template-columns: 60% 40%;
+  grid-template-columns: 70% 30%;
   gap: 20px;
   position: relative;
   margin-top: 3rem;
+}
+#explore .post_grid_layout {
+  margin-top: 0;
 }
 
 .sidebar {
@@ -340,7 +347,7 @@ header nav a.nav-active:before {
   font-size: 1.1rem;
   padding-bottom: 7px;
   transition: var(--transition);
-} 
+}
 .sidebar .feature_content a:hover {
   color: var(--color-primary);
 }
@@ -366,6 +373,35 @@ header nav a.nav-active:before {
 .sidebar .news_letter div {display: flex; align-items: stretch; justify-content: center; gap: 10px;}
 .news_letter button {height: fit-content;}
 
+/* ========== PAGINATION ========== */
+.pagination {
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination li {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.pagination button {
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: 700;
+}
+
+.pagination button.active {
+  background-color: #000;
+}
+
+
+
 
 /* ========== POST ========== */
 .post_section {
@@ -389,7 +425,7 @@ header nav a.nav-active:before {
 
 .post_in {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
   background: rgba(0, 0, 0, 0.2);
   padding: 20px;
@@ -402,7 +438,9 @@ header nav a.nav-active:before {
 .post .image {
   border-radius: 10px;
   overflow: hidden;
-  height: 350px;
+  /* height: 350px; */
+  max-height: 500px !important;
+  margin-bottom: 20px !important;
 }
 
 .post .image img {
@@ -786,40 +824,42 @@ header nav a.nav-active:before {
 
 /* ============ CATEGORY PAGE ============ */
 
-#category-page .post_grid {
+.category-page.post_grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
 
-#category-page .post_grid .post {
+.category-page.post_grid .post {
   width: 100%;
   margin-bottom: 0;
 }
 
-#category-page .post_grid .post:nth-child(1) {
+.category-page.post_grid .post:nth-child(1) {
   grid-row-start: 1;
   grid-row-end: 4;
 }
+.category-page.post_grid .post:nth-child(1) .post_in {grid-template-columns: 1fr;}
 
-#category-page .post:not(:first-child) .post_in {
+
+.category-page .post:not(:first-child) .post_in {
   grid-template-columns: 35% 65%;
   gap: 10px;
 }
 
-#category-page .post:not(:first-child) .image {
+.category-page .post:not(:first-child) .image {
   max-height: 150px;
 }
 
-#category-page .post .texts h2 {
+.category-page .post .texts h2 {
   font-size: 1.1rem;
 }
-#category-page .post:first-child .texts h2 {
+.category-page .post:first-child .texts h2 {
   font-size: 2.3rem;
 }
-#category-page .post:not(:first-child) .summary {
+.category-page .post:not(:first-child) .summary {
   font-size: 0.78rem;
 }
-#category-page .read_more {
+.category-page .read_more {
   display: none;
 }
 

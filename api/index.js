@@ -159,6 +159,7 @@ app.get('/category', async (req, res) => {
     }
 });
 
+
 // Fetch category title by ID
 app.get('/category/:categoryId', async (req, res) => {
     const categoryId = req.params.categoryId;
@@ -180,7 +181,6 @@ app.get('/:categoryId/posts', async (req, res) => {
     const { categoryId } = req.params;
 
     try {
-        // Assuming 'category' field in Post model is an ObjectId reference to Category model
         const posts = await Post.find({ category: categoryId })
             .populate('author', ['username'])
             .populate('category', ['category_title']) // Populate the 'category' field

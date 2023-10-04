@@ -4,6 +4,7 @@ import { UserContext } from "../UserContext";
 import Post from "../Components/Post";
 import PostCategory from "../Components/PostCategory";
 import Loader from "../Components/Loader";
+import PostGrid from "../Components/PostGrid";
 
 const CategoryPages = () => {
   const [categoryTitle, setCategoryTitle] = useState("");
@@ -61,11 +62,17 @@ const CategoryPages = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="post_grid" style={{ marginTop: "4rem" }}>
-          {posts.map((post) => (
-            <Post key={post._id} {...post} category={post.category._id} />
-          ))}
-        </div>
+        <>
+          <div className="post_grid category-page" style={{ marginTop: "4rem" }}>
+            {posts.slice(0, 4).map((post) => (
+              <Post key={post._id} {...post} category={post.category._id} />
+            ))}
+          </div>
+
+          {posts.length > 4 && (
+            <PostGrid posts={posts.slice(4)} isLoading={isLoading} />
+          )}
+        </>
       )}
     </div>
   );
