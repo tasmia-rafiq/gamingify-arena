@@ -12,7 +12,7 @@ const UserProfile = ({ isCurrentUser }) => {
     if (isCurrentUser) {
       const fetchUserID = async () => {
         try {
-          const response = await fetch("https://gamingify-arena-api.vercel.app/profile", {
+          const response = await fetch("http://localhost:4000/profile", {
             method: "GET",
             credentials: "include",
           });
@@ -28,8 +28,8 @@ const UserProfile = ({ isCurrentUser }) => {
   }, [isCurrentUser]);
 
   const url = isCurrentUser
-    ? `https://gamingify-arena-api.vercel.app/${userID}/userPosts`
-    : `https://gamingify-arena-api.vercel.app/profile/${authorID}`;
+    ? `http://localhost:4000/${userID}/userPosts`
+    : `http://localhost:4000/profile/${authorID}`;
 
   const { posts, loading } = useFetchUserPosts(url);
 

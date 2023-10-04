@@ -10,7 +10,7 @@ const RegisterPage = () => {
         ev.preventDefault();
 
         //since this is async function, we will add await
-        const response = await fetch('https://gamingify-arena-api.vercel.app/register', {
+        const response = await fetch('http://localhost:4000/register', {
             method: 'POST',
             body: JSON.stringify({username, password}),
             headers: {'Content-Type':'application/json'},

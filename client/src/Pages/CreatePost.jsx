@@ -45,7 +45,7 @@ const CreatePost = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("https://gamingify-arena-api.vercel.app/category");
+        const response = await fetch("http://localhost:4000/category");
         if (response.ok) {
           const categoriesData = await response.json();
           setCategories(categoriesData);
@@ -70,7 +70,7 @@ const CreatePost = () => {
     data.set("content", content);
     data.set("file", files[0]);
 
-    const response = await fetch("https://gamingify-arena-api.vercel.app/post", {
+    const response = await fetch("http://localhost:4000/post", {
       method: "POST",
       body: data,
       credentials: "include", // sending cookie

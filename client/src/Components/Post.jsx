@@ -21,7 +21,7 @@ const Post = ({
     const fetchCategoryTitle = async () => {
       try {
         const response = await fetch(
-          `https://gamingify-arena-api.vercel.app/category/${category}`
+          `http://localhost:4000/category/${category}`
         );
         const data = await response.json();
         setCategoryTitle(data);
@@ -39,7 +39,7 @@ const Post = ({
         <div className="image">
           <Link to={`/post/${_id}`}>
             <img
-              src={"https://gamingify-arena-api.vercel.app/" + coverImg}
+              src={"http://localhost:4000/" + coverImg}
               alt="Cover"
               loading="lazy"
             />
