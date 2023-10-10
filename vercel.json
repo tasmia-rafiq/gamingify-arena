@@ -19,12 +19,6 @@
         "src": "/(.*)",
         "dest": "client/public/index.html"
       }
-    ],
-    "rewrites": [
-      {
-        "source": "/api/(.*)",
-        "destination": "https://gamingify-arena-api.vercel.app/$1"
-      }
     ]
   }
   
