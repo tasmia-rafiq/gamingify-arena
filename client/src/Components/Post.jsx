@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../UserContext";
+import Image from "./Image";
 
 const Post = ({
   _id,
@@ -38,8 +39,8 @@ const Post = ({
       <div className="post_in">
         <div className="image">
           <Link to={`/post/${_id}`}>
-            <img
-              src={"http://localhost:4000/" + coverImg}
+            <Image
+              src={coverImg}
               alt="Cover"
               loading="lazy"
             />

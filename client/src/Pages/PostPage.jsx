@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { useContext, useEffect, useState } from "react";
-import { Navigate, useParams } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
 import { UserContext } from "../UserContext";
 import { Link } from "react-router-dom";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -8,11 +8,13 @@ import { FaRegEdit } from "react-icons/fa";
 import PostCategory from "../Components/PostCategory";
 import Sidebar from "../Components/Sidebar";
 import Loader from "../Components/Loader";
+import Image from "../Components/Image";
 
 const PostPage = () => {
   const [postInfo, setPostInfo] = useState(null);
   const [deleted, setDeleted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   const { userInfo } = useContext(UserContext);
   const { id } = useParams();
@@ -57,6 +59,7 @@ const PostPage = () => {
 
       if (response.ok) {
         setDeleted(true);
+        navigate(-1);
       } else {
         const data = await response.json();
         console.error(data);
@@ -75,7 +78,6 @@ const PostPage = () => {
     }
   };
 
-  if (deleted) return <Navigate to="/" />;
 
   if (!postInfo) return "";
 
@@ -122,8 +124,8 @@ const PostPage = () => {
             {/* LEFT SIDE */}
             <div className="left_side">
               <div className="image">
-                <img
-                  src={`http://localhost:4000/${postInfo.coverImg}`}
+                <Image
+                  src={postInfo.coverImg}
                   alt="Cover"
                 />
               </div>

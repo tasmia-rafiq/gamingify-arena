@@ -10,19 +10,16 @@ const bcrypt = require('bcryptjs');
 const app = express();
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
-
 const multer = require('multer');
 const uploadMiddleware = multer({
-    dest: '/tmp',
+    dest: 'uploads/',
     limits: { fileSize: 40 * 1024 * 1024, },
-}); //I removed this because we need to deploy this code to vercel and it does not allow to store in upload files
+});
 //to rename file
 const fs = require('fs');
 
 // to encrypt password
 const salt = bcrypt.genSaltSync(10);
-const bucket = 'gamingify-arena-app';
 
 // for jwt
 const secret = process.env.SECRET;
@@ -33,33 +30,11 @@ app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads')); //this method serves files (like images, stylesheets, scripts, etc.) directly to the client without needing to create explicit routes for each file. Instead, you define a single route that serves static files from a designated directory.
 
 //connecting MongoDB
-
-// creating function to connct with s3 bucket aws
-async function uploadToS3(path, originalFilename, mimetype) {
-    const client = new S3Client({
-        region: 'eu-north-1',
-        credentials: {
-            accessKeyId: process.env.S3_ACCESS_KEY,
-            secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-        },
-    });
-    const parts = originalFilename.split('.');
-    const ext = parts[parts.length - 1];
-    const newFilename = Date.now() + '.' + ext;
-    await client.send(new PutObjectCommand({
-        Bucket: bucket,
-        Body: fs.readFileSync(path),
-        Key: newFilename,
-        ContentType: mimetype,
-        ACL: 'public-read',
-    }));
-
-    return `https://${bucket}.s3.amazonaws.com/${newFilename}`;
-}
+const mongodbURI = process.env.MONGODB_URI;
+mongoose.connect(mongodbURI);
 
 //register
 app.post('/register', async (req, res) => {
-    mongoose.connect(process.env.MONGODB_URI);
     const { username, password } = req.body;
 
     //creating user
@@ -79,7 +54,6 @@ app.post('/register', async (req, res) => {
 
 //login
 app.post('/login', async (req, res) => {
-    mongoose.connect(process.env.MONGODB_URI);
     const { username, password } = req.body;
 
     const userDoc = await User.findOne({ username });
@@ -104,7 +78,6 @@ app.post('/login', async (req, res) => {
 
 //profile
 app.get('/profile', (req, res) => {
-    mongoose.connect(process.env.MONGODB_URI);
     // getting token
     const { token } = req.cookies;
     jwt.verify(token, secret, {}, (err, info) => {
@@ -120,11 +93,13 @@ app.post('/logout', (req, res) => {
 
 // create post
 app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
-    mongoose.connect(process.env.MONGODB_URI);
     //to upload the file from req body, we will use Multer (a middleware used to handle files upload)
 
-    const { originalname, path, mimetype } = req.file;
-    const url = await uploadToS3(path, originalname, mimetype);
+    const { originalname, path } = req.file;
+    const parts = originalname.split('.');
+    const ext = parts[parts.length - 1];
+    const newPath = path + '.' + ext;
+    fs.renameSync(path, newPath);
 
     //creating post in DB
 
@@ -142,7 +117,7 @@ app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
             summary,
             category: categoryDoc._id,
             content,
-            coverImg: url,
+            coverImg: newPath,
             author: info.id,
         });
         res.json(postDoc);
@@ -152,7 +127,6 @@ app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
 
 //display posts
 app.get('/post', async (req, res) => {
-    mongoose.connect(process.env.MONGODB_URI);
     const page = parseInt(req.query.page) || 1;
     const limit = 10; // Adjust as needed
     const skip = (page - 1) * limit;
@@ -169,7 +143,6 @@ app.get('/post', async (req, res) => {
 
 //single post page
 app.get('/post/:id', async (req, res) => {
-    mongoose.connect(process.env.MONGODB_URI);
     const { id } = req.params;
     const postDoc = await Post.findById(id).populate('author', ['username']).populate('category', ['category_title']);
     res.json(postDoc);
@@ -177,7 +150,6 @@ app.get('/post/:id', async (req, res) => {
 
 // navigation menu category listing
 app.get('/category', async (req, res) => {
-    mongoose.connect(process.env.MONGODB_URI);
     try {
         const categories = await Category.find();
         res.json(categories);
@@ -190,7 +162,6 @@ app.get('/category', async (req, res) => {
 
 // Fetch category title by ID
 app.get('/category/:categoryId', async (req, res) => {
-    mongoose.connect(process.env.MONGODB_URI);
     const categoryId = req.params.categoryId;
 
     try {
@@ -207,7 +178,6 @@ app.get('/category/:categoryId', async (req, res) => {
 
 // Fetch category posts
 app.get('/:categoryId/posts', async (req, res) => {
-    mongoose.connect(process.env.MONGODB_URI);
     const { categoryId } = req.params;
 
     try {
@@ -230,7 +200,6 @@ app.get('/:categoryId/posts', async (req, res) => {
 
 // display profile's posts
 app.get('/:userID/userPosts', async (req, res) => {
-    mongoose.connect(process.env.MONGODB_URI);
     const userID = req.params.userID;
     console.log('Requested userID:', userID);
 
@@ -249,7 +218,6 @@ app.get('/:userID/userPosts', async (req, res) => {
 
 // display author posts
 app.get('/profile/:authorID', async (req, res) => {
-    mongoose.connect(process.env.MONGODB_URI);
     const authorID = req.params.authorID;
     console.log('Requested authorID:', authorID);
 
@@ -267,13 +235,17 @@ app.get('/profile/:authorID', async (req, res) => {
 })
 
 
+
+
 // Editing Post
 app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
-    mongoose.connect(process.env.MONGODB_URI);
-    let url = null;
+    let newPath = null;
     if (req.file) {
-        const { originalname, path, mimetype } = req.file;
-        url = await uploadToS3(path, originalname, mimetype);
+        const { originalname, path } = req.file;
+        const parts = originalname.split('.');
+        const ext = parts[parts.length - 1];
+        newPath = path + '.' + ext;
+        fs.renameSync(path, newPath);
     }
 
     const { token } = req.cookies;
@@ -294,8 +266,8 @@ app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
         postDoc.summary = summary;
         postDoc.category = category;
         postDoc.content = content;
-        if (url) {
-            postDoc.coverImg = url;
+        if (newPath) {
+            postDoc.coverImg = newPath;
         }
 
         // Save the updated document
@@ -308,7 +280,6 @@ app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
 
 // delete post
 app.delete('/post/:id', async (req, res) => {
-    mongoose.connect(process.env.MONGODB_URI);
     const postId = req.params.id;
     const { token } = req.cookies;
 
