@@ -57,7 +57,7 @@ const EditPost = () => {
     const response = await fetch("https://gamingify-arena-api.vercel.app/post", {
       method: "PUT",
       body: data,
-      // credentials: "include",
+      credentials: "include",
     });
 
     if (response.ok) {
