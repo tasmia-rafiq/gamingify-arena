@@ -22,7 +22,7 @@ const Post = ({
     const fetchCategoryTitle = async () => {
       try {
         const response = await fetch(
-          `http://localhost:4000/category/${category}`
+          `https://gamingify-arena-api.vercel.app/category/${category}`
         );
         const data = await response.json();
         setCategoryTitle(data);

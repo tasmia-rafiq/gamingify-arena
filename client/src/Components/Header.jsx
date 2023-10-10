@@ -17,7 +17,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:4000/profile", {
+    fetch("https://gamingify-arena-api.vercel.app/profile", {
       credentials: "include",
     }).then((response) => {
       response.json().then((userInfo) => {
@@ -28,7 +28,7 @@ const Header = () => {
 
   useEffect(() => {
     // Fetch categories
-    fetch("http://localhost:4000/category")
+    fetch("https://gamingify-arena-api.vercel.app/category")
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));
@@ -53,7 +53,7 @@ const Header = () => {
   }, []);
 
   function logout() {
-    fetch("http://localhost:4000/logout", {
+    fetch("https://gamingify-arena-api.vercel.app/logout", {
       credentials: "include",
       method: "POST",
     });
