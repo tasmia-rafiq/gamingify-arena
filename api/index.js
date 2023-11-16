@@ -16,7 +16,7 @@ const multer = require('multer');
 const uploadMiddleware = multer({
     dest: '/tmp',
     limits: { fileSize: 10 * 1024 * 1024, },
-}).single('file'); //I removed this because we need to deploy this code to vercel and it does not allow to store in upload files
+}); //I removed this because we need to deploy this code to vercel and it does not allow to store in upload files
 //to rename file
 const fs = require('fs');
 
