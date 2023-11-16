@@ -28,6 +28,15 @@ const bucket = 'gamingify-arena-app';
 const secret = process.env.SECRET;
 
 app.use(cors({ credentials: true, origin: 'https://gamingify-arena.vercel.app' }));
+
+// Enable CORS for all routes
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://gamingify-arena.vercel.app');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
+
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads')); //this method serves files (like images, stylesheets, scripts, etc.) directly to the client without needing to create explicit routes for each file. Instead, you define a single route that serves static files from a designated directory.

@@ -72,6 +72,10 @@ const CreatePost = () => {
 
     const response = await fetch("https://gamingify-arena-api.vercel.app/api/post", {
       method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
       body: data,
       credentials: "include", // sending cookie
     });
