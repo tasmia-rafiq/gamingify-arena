@@ -14,7 +14,7 @@ const EditPost = () => {
   const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
-    fetch("http:localhost:4000/api/post/" + id).then((response) => {
+    fetch("https://gamingify-arena.vercel.app/api/post/" + id).then((response) => {
       response.json().then((postInfo) => {
         setTitle(postInfo.title);
         setContent(postInfo.content);
@@ -27,7 +27,7 @@ const EditPost = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http:localhost:4000/api/category");
+        const response = await fetch("https://gamingify-arena.vercel.app/api/category");
         if (response.ok) {
           const categoriesData = await response.json();
           setCategories(categoriesData);
@@ -54,7 +54,7 @@ const EditPost = () => {
       data.set("file", files?.[0]);
     }
 
-    const response = await fetch("http:localhost:4000/api/post", {
+    const response = await fetch("https://gamingify-arena.vercel.app/api/post", {
       method: "PUT",
       body: data,
       credentials: "include",

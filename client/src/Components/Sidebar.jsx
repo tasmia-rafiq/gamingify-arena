@@ -12,7 +12,7 @@ const Sidebar = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const catResponse = await fetch("http:localhost:4000/api/category");
+        const catResponse = await fetch("https://gamingify-arena.vercel.app/api/category");
         if (catResponse.ok) {
           const catData = await catResponse.json();
           setCategories(catData);

@@ -11,7 +11,7 @@ const AuthorProfile = () => {
     const fetchPosts = async () => {
       try {
         const response = await fetch(
-          `http:localhost:4000/api/profile/${authorID}`,
+          `https://gamingify-arena.vercel.app/api/profile/${authorID}`,
           {
             method: "GET",
             credentials: "include", // Include cookies in the request

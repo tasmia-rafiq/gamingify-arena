@@ -8,7 +8,7 @@ const HomePage = () => {
 
   // fetching all posts
   useEffect(() => {
-    fetch("http:localhost:4000/api/post").then((response) => {
+    fetch("https://gamingify-arena.vercel.app/api/post").then((response) => {
       response.json().then((posts) => {
         setPosts(posts);
         setIsLoading(false);
