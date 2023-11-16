@@ -346,4 +346,11 @@ app.delete('/api/post/:id', async (req, res) => {
     }
 });
 
+// Add this middleware at the end of your middleware and routes
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Internal Server Error', message: err.message });
+});
+  
+
 app.listen(4000);
