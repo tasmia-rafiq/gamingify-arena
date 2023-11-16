@@ -63,6 +63,14 @@ const CreatePost = () => {
   async function createNewPost(ev) {
     ev.preventDefault();
 
+    // Check file size before making the request
+    const MAX_FILE_SIZE = 10 * 1024 * 1024; // Adjust the maximum file size limit as needed
+    if (files[0].size > MAX_FILE_SIZE) {
+      console.error('File size exceeds the limit');
+      alert('File size exceeds the limit');
+      return;
+    }
+
     const data = new FormData();
     data.set("title", title);
     data.set("summary", summary);
