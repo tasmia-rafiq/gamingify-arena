@@ -11,7 +11,7 @@ const LoginPage = () => {
   async function login(ev) {
     ev.preventDefault();
 
-    const response = await fetch('https://gamingify-arena.vercel.app/api/login', {
+    const response = await fetch('https://gamingify-arena-api.vercel.app/api/login', {
       method: 'POST',
       body: JSON.stringify({username, password}),
       headers: {'Content-Type':'application/json'},

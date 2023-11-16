@@ -12,7 +12,7 @@ const UserProfile = ({ isCurrentUser }) => {
     if (isCurrentUser) {
       const fetchUserID = async () => {
         try {
-          const response = await fetch("https://gamingify-arena.vercel.app/api/profile", {
+          const response = await fetch("https://gamingify-arena-api.vercel.app/api/profile", {
             method: "GET",
             credentials: "include",
           });

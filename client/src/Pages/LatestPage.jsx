@@ -10,7 +10,7 @@ const LatestPage = () => {
   useEffect(() => {
     const fetchAllPosts = async () => {
       try {
-        const response = await fetch("https://gamingify-arena.vercel.app/api/post");
+        const response = await fetch("https://gamingify-arena-api.vercel.app/api/post");
         if (response.ok) {
           const data = await response.json();
           setPosts(data);
