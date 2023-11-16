@@ -129,33 +129,41 @@ app.post('/api/logout', (req, res) => {
 
 // create post
 app.post('/api/post', uploadMiddleware.single('file'), async (req, res) => {
-    mongoose.connect(process.env.MONGODB_URI);
-    //to upload the file from req body, we will use Multer (a middleware used to handle files upload)
+    try {
+        console.log('Entering /api/post route');
 
-    const { originalname, path, mimetype } = req.file;
-    const url = await uploadToS3(path, originalname, mimetype);
+        mongoose.connect(process.env.MONGODB_URI);
+        //to upload the file from req body, we will use Multer (a middleware used to handle files upload)
 
-    //creating post in DB
+        const { originalname, path, mimetype } = req.file;
+        const url = await uploadToS3(path, originalname, mimetype);
 
-    //getting token so that we can get the user Id
-    const { token } = req.cookies;
-    jwt.verify(token, secret, {}, async (err, info) => {
-        if (err) throw err;
-        const { title, summary, category, content } = req.body;
-        const categoryDoc = await Category.findOne({ category_title: category });
-        if (!categoryDoc) {
-            return res.status(400).json('Category not found');
-        }
-        const postDoc = await Post.create({
-            title,
-            summary,
-            category: categoryDoc._id,
-            content,
-            coverImg: url,
-            author: info.id,
+        //creating post in DB
+
+        //getting token so that we can get the user Id
+        const { token } = req.cookies;
+        jwt.verify(token, secret, {}, async (err, info) => {
+            if (err) throw err;
+            const { title, summary, category, content } = req.body;
+            const categoryDoc = await Category.findOne({ category_title: category });
+            if (!categoryDoc) {
+                return res.status(400).json('Category not found');
+            }
+            const postDoc = await Post.create({
+                title,
+                summary,
+                category: categoryDoc._id,
+                content,
+                coverImg: url,
+                author: info.id,
+            });
+            res.json(postDoc);
         });
-        res.json(postDoc);
-    });
+
+    } catch (error) {
+        console.error('Error in /api/post route:', error);
+        res.status(500).json({ error: 'Internal Server Error', message: error.message });
+    }
 });
 
 
@@ -351,6 +359,6 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ error: 'Internal Server Error', message: err.message });
 });
-  
+
 
 app.listen(4000);
