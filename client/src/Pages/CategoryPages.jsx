@@ -18,14 +18,14 @@ const CategoryPages = () => {
       try {
         // to fetch category
         const categoryResponse = await fetch(
-          `https://gamingify-arena-api.vercel.app/category/${categoryId}`
+          `http:localhost:4000/api/category/${categoryId}`
         );
         const categoryData = await categoryResponse.json();
         setCategoryTitle(categoryData);
 
         // to fetch posts of certain category
         const postResponse = await fetch(
-          `https://gamingify-arena-api.vercel.app/${categoryId}/posts`
+          `http:localhost:4000/api/${categoryId}/posts`
         );
 
         if (postResponse.ok) {

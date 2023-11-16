@@ -8,7 +8,7 @@ const CategoryDropdown = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("https://gamingify-arena-api.vercel.app/category");
+        const response = await fetch("http:localhost:4000/api/category");
         if (response.ok) {
           const categoriesData = await response.json();
           setCategories(categoriesData);

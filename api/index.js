@@ -27,7 +27,7 @@ const bucket = 'gamingify-arena-app';
 // for jwt
 const secret = process.env.SECRET;
 
-app.use(cors({ credentials: true, origin: 'https://gamingify-arena.vercel.app' }));
+app.use(cors({ credentials: true, origin: 'http:localhost:3000' }));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads')); //this method serves files (like images, stylesheets, scripts, etc.) directly to the client without needing to create explicit routes for each file. Instead, you define a single route that serves static files from a designated directory.
@@ -58,7 +58,7 @@ async function uploadToS3(path, originalFilename, mimetype) {
 }
 
 //register
-app.post('/register', async (req, res) => {
+app.post('/api/register', async (req, res) => {
     mongoose.connect(process.env.MONGODB_URI);
     const { username, password } = req.body;
 
@@ -78,7 +78,7 @@ app.post('/register', async (req, res) => {
 });
 
 //login
-app.post('/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
     mongoose.connect(process.env.MONGODB_URI);
     const { username, password } = req.body;
 
@@ -103,7 +103,7 @@ app.post('/login', async (req, res) => {
 });
 
 //profile
-app.get('/profile', (req, res) => {
+app.get('/api/profile', (req, res) => {
     mongoose.connect(process.env.MONGODB_URI);
     // getting token
     const { token } = req.cookies;
@@ -114,12 +114,12 @@ app.get('/profile', (req, res) => {
 });
 
 //logout
-app.post('/logout', (req, res) => {
+app.post('/api/logout', (req, res) => {
     res.cookie('token', '').json('ok');
 });
 
 // create post
-app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
+app.post('/api/post', uploadMiddleware.single('file'), async (req, res) => {
     mongoose.connect(process.env.MONGODB_URI);
     //to upload the file from req body, we will use Multer (a middleware used to handle files upload)
 
@@ -151,7 +151,7 @@ app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
 
 
 //display posts
-app.get('/post', async (req, res) => {
+app.get('/api/post', async (req, res) => {
     mongoose.connect(process.env.MONGODB_URI);
     const page = parseInt(req.query.page) || 1;
     const limit = 10; // Adjust as needed
@@ -168,7 +168,7 @@ app.get('/post', async (req, res) => {
 });
 
 //single post page
-app.get('/post/:id', async (req, res) => {
+app.get('/api/post/:id', async (req, res) => {
     mongoose.connect(process.env.MONGODB_URI);
     const { id } = req.params;
     const postDoc = await Post.findById(id).populate('author', ['username']).populate('category', ['category_title']);
@@ -176,7 +176,7 @@ app.get('/post/:id', async (req, res) => {
 });
 
 // navigation menu category listing
-app.get('/category', async (req, res) => {
+app.get('/api/category', async (req, res) => {
     mongoose.connect(process.env.MONGODB_URI);
     try {
         const categories = await Category.find();
@@ -189,7 +189,7 @@ app.get('/category', async (req, res) => {
 
 
 // Fetch category title by ID
-app.get('/category/:categoryId', async (req, res) => {
+app.get('/api/category/:categoryId', async (req, res) => {
     mongoose.connect(process.env.MONGODB_URI);
     const categoryId = req.params.categoryId;
 
@@ -206,7 +206,7 @@ app.get('/category/:categoryId', async (req, res) => {
 });
 
 // Fetch category posts
-app.get('/:categoryId/posts', async (req, res) => {
+app.get('/api/:categoryId/posts', async (req, res) => {
     mongoose.connect(process.env.MONGODB_URI);
     const { categoryId } = req.params;
 
@@ -229,7 +229,7 @@ app.get('/:categoryId/posts', async (req, res) => {
 
 
 // display profile's posts
-app.get('/:userID/userPosts', async (req, res) => {
+app.get('/api/:userID/userPosts', async (req, res) => {
     mongoose.connect(process.env.MONGODB_URI);
     const userID = req.params.userID;
     console.log('Requested userID:', userID);
@@ -248,7 +248,7 @@ app.get('/:userID/userPosts', async (req, res) => {
 });
 
 // display author posts
-app.get('/profile/:authorID', async (req, res) => {
+app.get('/api/profile/:authorID', async (req, res) => {
     mongoose.connect(process.env.MONGODB_URI);
     const authorID = req.params.authorID;
     console.log('Requested authorID:', authorID);
@@ -268,7 +268,7 @@ app.get('/profile/:authorID', async (req, res) => {
 
 
 // Editing Post
-app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
+app.put('/api/post', uploadMiddleware.single('file'), async (req, res) => {
     mongoose.connect(process.env.MONGODB_URI);
     let url = null;
     if (req.file) {
@@ -307,7 +307,7 @@ app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
 });
 
 // delete post
-app.delete('/post/:id', async (req, res) => {
+app.delete('/api/post/:id', async (req, res) => {
     mongoose.connect(process.env.MONGODB_URI);
     const postId = req.params.id;
     const { token } = req.cookies;
