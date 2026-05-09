@@ -25,4 +25,11 @@ app.use("/api/v1/posts/", postRoutes);
 app.use("/api/v1/categories/", categoryRoutes);
 app.use("/api/v1/users/", userRoutes);
 
+// for monitoring
+app.get("/api/v1/monitor", (req, res) => {
+  res.status(200).json({
+    status: "ok"
+  });
+});
+
 export default app;
